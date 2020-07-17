@@ -1,0 +1,82 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+
+<head>
+	<title>Pds</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{pds.header.read}">공개자료실 상세보기</h2>
+	
+	<form id="notice" th:object="${pds}">
+		<input type="hidden" name="itemId" th:field="*{itemId}" />	
+		
+		<table>
+			<tr>
+				<td th:text="#{pds.itemName}">자료명</td>
+				<td><input type="text" name="itemName" th:field="*{itemName}" readonly="readonly" /></td>
+			</tr>
+			<tr>
+				<td th:text="#{pds.itemFile}">파일</td>
+				<td>
+					<div class="uploadedList"></div>
+				</td>
+			</tr>
+			<tr>
+				<td th:text="#{pds.itemDescription}">자료설명</td>
+				<td><textarea name="description" th:field="*{description}" readonly="readonly"></textarea></td>
+			</tr>
+		</table>
+		
+	</form>
+	
+	<div>
+		<button type="submit" id="btnList" th:text="#{action.list}">목록</button>
+	</div>
+	
+	<script>
+	$(document).ready(function() {
+		
+		$("#btnList").on("click", function() {
+			self.location = "list";
+		});
+	
+	});
+	</script>
+	
+	<script type="text/javascript" th:inline="javascript">
+	$(document).ready(function() {
+	  
+		function getOriginalName(fileName){
+			var idx = fileName.indexOf("_") + 1;
+			return fileName.substr(idx);
+		}
+		
+		var itemId = [[${pds.itemId}]];
+		
+		console.log("itemId : " + itemId);
+		
+		$.getJSON("/pds/getAttach/"+itemId,function(list){
+			$(list).each(function(){
+				
+				console.log("data : " + this);
+				
+				var data = this;
+				
+				console.log("data : " + data);
+				console.log("getOriginalName(data) : " + getOriginalName(data));
+				
+				var str = "<div><a href='/pds/downloadFile?fullName="+data+"'>" + getOriginalName(data)+"</a></div>";
+				  
+				$(".uploadedList").append(str);
+			});
+		});
+			
+	});
+	</script>
+</div>
+</body>
+</html>

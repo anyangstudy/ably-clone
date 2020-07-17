@@ -1,0 +1,60 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+
+<head>
+	<title>Item</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{item.header.read}">상품 상세보기</h2>
+	
+	<form id="item" action="list.html" th:action="@{/item/buy}" th:object="${item}" method="POST">
+		<input type="hidden" name="itemId" th:field="*{itemId}" />
+		<input type="hidden" name="pictureUrl" th:field="*{pictureUrl}" />
+		<input type="hidden" name="previewUrl" th:field="*{previewUrl}" />
+	
+		<table>
+			<tr>
+				<td th:text="#{item.itemName}">상품명</td>
+				<td><input type="text" name="itemName" th:field="*{itemName}" /></td>
+			</tr>
+			<tr>
+				<td th:text="#{item.itemPrice}">상품가격</td>
+				<td><input type="text" name="price" th:field="*{price}" />&nbsp;원</td>
+			</tr>
+			<tr>
+				<td th:text="#{item.preview}">미리보기</td>
+				<td><img src="display?itemId=${item.itemId}" th:src="|display?itemId=${item.itemId}|" width="210" height="240"></td>
+			</tr>		
+			<tr>
+				<td th:text="#{item.itemDescription}">상품설명</td>
+				<td><textarea name="description" th:field="*{description}"></textarea></td>
+			</tr>
+		</table>
+	</form>
+	
+	<div>
+		<button type="submit" id="btnBuy" th:text="#{action.buy}">구매</button>
+		<button type="submit" id="btnList" th:text="#{action.list}">목록</button>
+	</div>
+	
+	<script>
+		$(document).ready(function() {
+			$("#btnBuy").on("click", function() {
+				var formObj = $("#item");
+				
+				formObj.submit();
+			});
+			
+			$("#btnList").on("click", function() {
+				self.location = "list";
+			});
+		});
+	</script>
+</div>
+</body>
+</html>

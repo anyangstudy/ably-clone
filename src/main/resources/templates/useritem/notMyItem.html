@@ -1,0 +1,19 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+
+<head>
+	<title>UserItem</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{item.header.downloadError}">상품 다운로드 에러</h2>
+	
+	<p th:text="#{item.notMyItem}">나의 상품이 아닙니다.</p>
+	
+	<a href="list.html" th:href="@{/useritem/list}" th:text="#{action.list}">목록</a>
+</div>
+</body>
+</html>

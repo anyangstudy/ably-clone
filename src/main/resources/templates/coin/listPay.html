@@ -1,0 +1,37 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+
+<head>
+	<title>Coin</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{coin.header.listPay}">구매 내역</h2>
+	
+	<table border="1">
+		<tr>
+			<th align="center" width="80" th:text="#{coin.no}">번호</th>
+			<th align="center" width="120" th:text="#{coin.itemName}">상품명</th>
+			<th align="center" width="120" th:text="#{coin.payAmount}">구매금액</th>
+			<th align="center" width="180" th:text="#{coin.regdate}">등록일시</th>
+		</tr>
+		
+		<tr th:if="${#lists.isEmpty(list)}">
+			<td colspan="4" th:text="#{common.listEmpty}">
+				List is empty.
+			</td>
+		</tr>
+		
+		<tr th:each="payCoin : ${list}">
+			<td align="center" th:text="${payCoin.historyNo}">${payCoin.historyNo}</td>
+			<td align="left" th:text="${payCoin.itemName}">${payCoin.itemName}</td>
+			<td align="left" th:text="${payCoin.amount}">${payCoin.amount}</td>
+			<td align="center" th:text="${#dates.format(payCoin.regDate, 'yyyy-MM-dd HH:mm')}">${payCoin.regDate}</td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>

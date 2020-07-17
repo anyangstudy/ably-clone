@@ -1,0 +1,46 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+
+<head>
+	<title>Coin</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{coin.header.chargeCoin}">코인 충전</h2>
+	
+	<form id="chargeCoin" action="list.html" th:action="@{/coin/charge}" th:object="${chargeCoin}" method="POST">
+		<table>
+			<tr>
+				<td th:text="#{coin.amount}">충전금액</td>
+				<td><input type="text" name="amount" th:field="*{amount}" /></td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">amount의 에러 메시지</span></td>
+			</tr>
+		</table>
+	</form>
+	
+	<div>
+		<button type="submit" id="btnCharge" th:text="#{action.charge}">충전</button>
+		<button type="submit" id="btnList" th:text="#{action.list}">목록</button>
+	</div>
+	
+	<script>
+		$(document).ready(function() {
+	
+			var formObj = $("#chargeCoin");
+	
+			$("#btnCharge").on("click", function() {
+				formObj.submit();
+			});
+	
+			$("#btnList").on("click", function() {
+				self.location = "list";
+			});
+	
+		});
+	</script>
+</div>
+</body>
+</html>

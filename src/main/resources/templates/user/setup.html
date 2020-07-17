@@ -1,0 +1,56 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+	
+<head>
+	<title>User</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{user.header.register}">회원 등록</h2>
+	
+	<form id="member" action="list.html" th:action="@{/user/setup}" th:object="${member}" method="POST">
+		<table>
+			<tr>
+				<td th:text="#{user.userId}">아이디</td>
+				<td><input type="text" name="userId" th:field="*{userId}" /></td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId의 에러 메시지</span></td>
+			</tr>
+			<tr>
+				<td th:text="#{user.userPw}">비밀번호</td>
+				<td><input type="text" name="userPw" th:field="*{userPw}" /></td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}">userPw의 에러 메시지</span></td>
+			</tr>
+			<tr>
+				<td th:text="#{user.userName}">사용자명</td>
+				<td><input type="text" name="userName" th:field="*{userName}" /></td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">userName의 에러 메시지</span></td>
+			</tr>
+		</table>
+	</form>
+	
+	<div>
+		<button type="submit" id="btnRegister" th:text="#{action.register}">등록</button>
+		<button type="submit" id="btnList" th:text="#{action.list}">목록</button>
+	</div>
+	
+	<script>
+		$(document).ready(function() {
+	
+			var formObj = $("#member");
+	
+			$("#btnRegister").on("click", function() {
+				formObj.submit();
+			});
+	
+			$("#btnList").on("click", function() {
+				self.location = "list";
+			});
+	
+		});
+	</script>
+</div>
+</body>
+</html>

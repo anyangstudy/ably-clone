@@ -1,0 +1,99 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+  
+<head>
+	<title>User</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{user.header.modify}">회원 수정</h2>
+	
+	<form id="member" action="list.html" th:action="@{/user/modify}" th:object="${member}" method="POST">
+	
+		<input type="hidden" name="userNo" th:field="*{userNo}" />
+		
+		<table>
+			<tr>
+				<td th:text="#{user.userId}">아이디</td>
+				<td><input type="text" name="userId" th:field="*{userId}" readonly="readonly" /></td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId의 에러 메시지</span></td>
+			</tr>
+			<tr>
+				<td th:text="#{user.userName}">사용자명</td>
+				<td><input type="text" name="userName" th:field="*{userName}" /></td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">userName의 에러 메시지</span></td>
+			</tr>
+			<tr>
+				<td th:text="#{user.job}">직업</td>
+				<td>
+					<select th:field="*{job}">
+						<option th:each="item : ${jobList}" th:value="${item.value}" th:text="${item.label}"></option>
+					</select>
+				</td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('job')}" th:errors="*{job}">job의 에러 메시지</span></td>
+			</tr>
+			<tr>
+				<td th:text="#{user.auth} + ' - 1'">권한 - 1</td>
+				<td>
+					<select th:field="*{authList[0].auth}">
+						<option th:value="''" th:text="'=== 선택해 주세요 ==='" />
+						<option th:value="'ROLE_USER'" th:text="'사용자'" />
+						<option th:value="'ROLE_MEMBER'" th:text="'회원'" />
+						<option th:value="'ROLE_ADMIN'" th:text="관리자" />
+					</select>
+				</td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('authList[0].auth')}" th:errors="*{authList[0].auth}">authList[0].auth의 에러 메시지</span></td>
+			</tr>
+			<tr>
+				<td th:text="#{user.auth} + ' - 2'">권한 - 2</td>
+				<td>
+					<select th:field="*{authList[1].auth}">
+						<option th:value="''">=== 선택해 주세요 ===</option>
+						<option th:value="'ROLE_USER'">사용자</option>
+						<option th:value="'ROLE_MEMBER'">회원</option>
+						<option th:value="'ROLE_ADMIN'">관리자</option>
+					</select>
+				</td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('authList[1].auth')}" th:errors="*{authList[1].auth}">authList[1].auth의 에러 메시지</span></td>
+			</tr>
+			<tr>
+				<td th:text="#{user.auth} + ' - 3'">권한 - 3</td>
+				<td>
+					<select th:field="*{authList[2].auth}">
+						<option th:value="''">=== 선택해 주세요 ===</option>
+						<option th:value="'ROLE_USER'">사용자</option>
+						<option th:value="'ROLE_MEMBER'">회원</option>
+						<option th:value="'ROLE_ADMIN'">관리자</option>
+					</select>
+				</td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('authList[2].auth')}" th:errors="*{authList[2].auth}">authList[2].auth의 에러 메시지</span></td>
+			</tr>					
+		</table>
+	</form>
+	
+	<div>
+		<button type="submit" id="btnModify" th:text="#{action.modify}">수정</button>
+		<button type="submit" id="btnList" th:text="#{action.list}">목록</button>
+	</div>
+	
+	<script>
+		$(document).ready(function() {
+	
+			var formObj = $("#member");
+	
+			$("#btnModify").on("click", function() {
+				formObj.submit();
+			});
+	
+			$("#btnList").on("click", function() {
+				self.location = "list";
+			});
+	
+		});
+	</script>
+</div>
+</body>
+</html>

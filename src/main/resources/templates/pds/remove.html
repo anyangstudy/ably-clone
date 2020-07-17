@@ -1,0 +1,85 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+
+<head>
+	<title>Pds</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{pds.header.remove}">공개자료실 삭제</h2>
+	
+	<form id="pds" action="./list.html" th:action="@{/pds/remove}" th:object="${pds}" method="POST">
+		<input type="hidden" name="itemId" th:field="*{itemId}" />		
+		
+		<table>
+			<tr>
+				<td th:text="#{pds.itemName}">자료명</td>
+				<td><input type="text" name="itemName" th:field="*{itemName}" disabled="disabled" /></td>
+			</tr>
+			<tr>
+				<td th:text="#{pds.itemFile}">파일</td>
+				<td>
+					<div class="uploadedList"></div>
+				</td>
+			</tr>
+			<tr>
+				<td th:text="#{pds.itemDescription}">자료설명</td>
+				<td><textarea name="description" th:field="*{description}" disabled="disabled"></textarea></td>
+			</tr>
+		</table>
+	</form>
+	
+	<div>
+		<button type="submit" id="btnRemove" th:text="#{action.remove}">삭제</button>
+		<button type="submit" id="btnList" th:text="#{action.list}">목록</button>
+	</div>
+	
+	<script>
+	$(document).ready(function() {
+	
+		var formObj = $("#pds");
+	
+		$("#btnRemove").on("click", function() {
+			formObj.submit();
+		});
+	
+		$("#btnList").on("click", function() {
+			self.location = "list";
+		});
+	
+	});
+	</script>
+	
+	<script type="text/javascript" th:inline="javascript">
+	$(document).ready(function() {
+	  
+		function getOriginalName(fileName){
+			var idx = fileName.indexOf("_") + 1;
+			
+			return fileName.substr(idx);
+		}
+			
+		var itemId = [[${pds.itemId}]];
+		
+		console.log("itemId : " + itemId);
+		
+		$.getJSON("/pds/getAttach/"+itemId, function(list){
+			$(list).each(function(){
+				var data = this;
+				
+				console.log("data : " + data);
+				
+				var str = "<div>" + getOriginalName(data) + "</div>";
+				  
+				$(".uploadedList").append(str);
+			});
+		});
+	
+	});
+	</script>
+</div>
+</body>
+</html>

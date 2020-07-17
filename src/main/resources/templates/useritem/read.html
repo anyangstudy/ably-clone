@@ -1,0 +1,55 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+
+<head>
+	<title>UserItem</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{useritem.header.read}">구매상품 상세보기</h2>
+	
+	<form id="userItem" th:object="${userItem}">
+			<input type="hidden" name="userItemNo" th:field="*{userItemNo}" />	
+	
+		<table>
+			<tr>
+				<td th:text="#{useritem.itemName}">상품명</td>
+				<td><input type="text" name="itemName" th:field="*{itemName}" readonly="readonly" /></td>
+			</tr>
+			<tr>
+				<td th:text="#{useritem.itemPrice}">상품가격</td>
+				<td><input type="text" name="price" th:field="*{price}" readonly="readonly" /></td>
+			</tr>	
+			<tr>
+				<td th:text="#{useritem.itemFile}">상품파일</td>
+				<td><img src="/item/display?itemId=${userItem.itemId}" th:src="|/item/display?itemId=${userItem.itemId}|" width="210" height="240"></td>
+			</tr>	
+			<tr>
+				<td th:text="#{useritem.itemDescription}">상품설명</td>
+				<td><textarea name="description" th:field="*{description}" readonly="readonly"></textarea></td>
+			</tr>
+		</table>
+		
+	</form>
+	
+	<div>	
+		<button type="submit" id="btnList" th:text="#{action.list}">목록</button>
+	</div>
+	
+	<script>
+		$(document).ready(function() {
+	
+			var formObj = $("#useritem");
+	
+			$("#btnList").on("click", function() {
+				self.location = "list";
+			});
+	
+		});
+	</script>
+</div>
+</body>
+</html>

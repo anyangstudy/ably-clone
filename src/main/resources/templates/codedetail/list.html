@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+  
+<head>
+	<title>CodeDetail</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{codedetail.header.list}"></h2>
+	<a href="register.html" th:href="@{/codedetail/register}" th:text="#{action.new}">새로만들기</a>
+	<table border="1">
+		<tr>
+			<th align="center" width="160" th:text="#{codedetail.groupCode}">그룹코드</th>
+			<th align="center" width="160" th:text="#{codedetail.codeValue}">코드값</th>
+			<th align="center" width="160" th:text="#{codedetail.codeName}">코드명</th>
+			<th align="center" width="160" th:text="#{codedetail.sortSeq}">정렬순서</th>
+			<th align="center" width="180" th:text="#{codedetail.regdate}">등록일시</th>
+		</tr>
+		
+		<tr th:if="${#lists.isEmpty(list)}">
+			<td colspan="5" th:text="#{common.listEmpty}">
+				List is empty.
+			</td>
+		</tr>
+		
+		<tr th:each="codeDetail : ${list}">
+			<td align="center" th:text="${codeDetail.groupCode}">${codeDetail.groupCode}</td>
+			<td align="center" th:text="${codeDetail.codeValue}">${codeDetail.codeValue}</td>
+			<td align="left"><a href="read.html" th:href="|/codedetail/read?groupCode=${codeDetail.groupCode}&codeValue=${codeDetail.codeValue}|" th:text="${codeDetail.codeName}">${codeDetail.codeName}</a></td>
+			<td align="center" th:text="${codeDetail.sortSeq}">${codeDetail.sortSeq}</td>
+			<td align="center" th:text="${#dates.format(codeDetail.regDate, 'yyyy-MM-dd HH:mm')}">${codeDetail.regDate}</td>
+		</tr>
+	</table>
+	
+	<script th:inline="javascript">
+		var result = [[${msg}]];
+	
+		if (result === "SUCCESS") {
+			alert([[#{common.processSuccess}]]);
+		}
+	</script>
+</div>
+</body>
+</html>

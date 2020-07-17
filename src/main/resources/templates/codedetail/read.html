@@ -1,0 +1,73 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+  
+<head>
+	<title>CodeDetail</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{codedetail.header.read}">코드 상세보기</h2>
+	
+	<form id="codeDetail" action="list.html" th:action="@{/codedetail/remove}" th:object="${codeDetail}" method="POST">
+		<table>
+			<tr>
+				<td th:text="#{codedetail.groupCode}">그룹코드</td>
+				<td>
+					<select th:field="*{groupCode}">
+						<option th:each="groupCode : ${groupCodeList}" th:value="${groupCode.value}" th:text="${groupCode.label}"></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td th:text="#{codedetail.codeValue}">코드값</td>
+				<td><input type="text" name="codeValue" th:field="*{codeValue}" readonly="readonly" /></td>
+			</tr>
+			<tr>
+				<td th:text="#{codedetail.codeName}">코드명</td>
+				<td><input type="text" name="codeName" th:field="*{codeName}" readonly="readonly" /></td>
+			</tr>
+		</table>
+	</form>
+	
+	<div>
+		<button type="submit" id="btnEdit" th:text="#{action.edit}">편집</button>
+		<button type="submit" id="btnRemove" th:text="#{action.remove}">삭제</button>
+		<button type="submit" id="btnList" th:text="#{action.list}">목록</button>
+	</div>
+	
+	<script>
+		$(document).ready(function() {
+	
+			var formObj = $("#codeDetail");
+	
+			$("#btnEdit").on("click", function() {
+				formObj.attr("action", "/codedetail/modify");
+				formObj.attr("method", "get");
+				formObj.submit();
+				
+				var groupCode = $("#groupCode");
+				var groupCodeVal = groupCode.val();
+				
+				var codeValue = $("#codeValue");
+				var codeValueVal = codeValue.val();
+				
+				self.location = "modify?groupCode=" + groupCodeVal + "&" + "codeValue=" + codeValueVal;
+			});
+	
+			$("#btnRemove").on("click", function() {
+				formObj.attr("action", "remove");
+				formObj.submit();
+			});
+	
+			$("#btnList").on("click", function() {
+				self.location = "list";
+			});
+	
+		});
+	</script>
+</div>
+</body>
+</html>

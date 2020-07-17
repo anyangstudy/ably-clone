@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Main</title>
+    <script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}">
+</head>
+<body>
+<div th:insert="~{fragments/header::header}"></div>
+
+<div th:replace="~{fragments/menu::menu}"></div>
+<hr>
+
+
+<div layout:fragment="content"></div>
+
+<div th:insert="~{fragments/footer::footer}"></div>
+</body>
+
+</html>

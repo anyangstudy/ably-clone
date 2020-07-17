@@ -1,0 +1,60 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+
+<head>
+	<title>Item</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{item.header.remove}">상품 삭제</h2>
+	
+	<form id="item" action="list.html" th:action="@{/item/remove}" th:object="${item}" method="POST">
+		<input type="hidden" name="itemId" th:field="*{itemId}" />
+		
+		<table>
+			<tr>
+				<td th:text="#{item.itemName}">상품명</td>
+				<td><input type="text" name="itemName" th:field="*{itemName}" disabled="disabled" /></td>
+			</tr>
+			<tr>
+				<td th:text="#{item.itemPrice}">상품가격</td>
+				<td><input type="text" name="price" th:field="*{price}" disabled="disabled" />&nbsp;원</td>
+			</tr>
+			<tr>
+				<td th:text="#{item.preview}">미리보기</td>
+				<td><img src="display?itemId=${item.itemId}" th:src="|display?itemId=${item.itemId}|" width="210" height="240"></td>
+			</tr>
+			<tr>
+				<td th:text="#{item.itemDescription}">상품설명</td>
+				<td><textarea name="description" th:field="*{description}" disabled="disabled"></textarea></td>
+			</tr>
+		</table>
+	</form>
+	
+	<div>
+		<button type="submit" id="btnRemove" th:text="#{action.remove}">삭제</button>
+		<button type="submit" id="btnList" th:text="#{action.list}">목록</button>
+	</div>
+	
+	<script>
+		$(document).ready(function() {
+	
+			var formObj = $("#item");
+	
+			$("#btnRemove").on("click", function() {
+				formObj.submit();
+			});
+	
+			$("#btnList").on("click", function() {
+				self.location = "list";
+			});
+	
+		});
+	</script>
+</div>
+</body>
+</html>

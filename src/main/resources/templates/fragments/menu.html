@@ -1,0 +1,63 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div align="center" th:fragment="menu">
+    <table>
+        <tr>
+            <td width="80"><a href="../home.html" th:href="@{/}" th:text="#{header.home}">홈</a></td>
+
+            <th:block sec:authorize="!isAuthenticated()">
+                <td width="120"><a href="../board/list.html" th:href="@{/board/list}" th:text="#{menu.board.member}">회원게시판</a>
+                </td>
+                <td width="120"><a href="../notice/list.html" th:href="@{/notice/list}" th:text="#{menu.notice.member}">공지사항</a>
+                </td>
+                <td width="120"><a href="../item/list.html" th:href="@{/item/list}" th:text="#{menu.item.member}">상품</a>
+                </td>
+                <td width="120"><a href="../pds/list.html" th:href="@{/pds/list}" th:text="#{menu.pds.member}">공개자료실</a>
+                </td>
+            </th:block>
+
+            <th:block sec:authorize="isAuthenticated()">
+
+                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                    <td width="120"><a href="../codegroup/list.html" th:href="@{/codegroup/list}"
+                                       th:text="#{menu.codegroup.list}">코드그룹관리</a></td>
+                    <td width="120"><a href="../codedetail/list.html" th:href="@{/codedetail/list}"
+                                       th:text="#{menu.codedetail.list}">코드관리</a></td>
+                    <td width="120"><a href="../user/list.html" th:href="@{/user/list}" th:text="#{menu.user.admin}">회원관리</a>
+                    </td>
+                    <td width="120"><a href="../board/list.html" th:href="@{/board/list}" th:text="#{menu.board.admin}">회원게시판관리</a>
+                    </td>
+                    <td width="120"><a href="../notice/list.html" th:href="@{/notice/list}"
+                                       th:text="#{menu.notice.admin}">공지사항관리</a></td>
+                    <td width="120"><a href="../item/list.html" th:href="@{/item/list}" th:text="#{menu.item.admin}">상품관리</a>
+                    </td>
+                    <td width="120"><a href="../pds/list.html" th:href="@{/pds/list}" th:text="#{menu.pds.admin}">공개자료실관리</a>
+                    </td>
+                </th:block>
+
+                <th:block sec:authorize="hasRole('ROLE_MEMBER')">
+                    <td width="120"><a href="../board/list.html" th:href="@{/board/list}"
+                                       th:text="#{menu.board.member}">회원게시판</a></td>
+                    <td width="120"><a href="../notice/list.html" th:href="@{/notice/list}"
+                                       th:text="#{menu.notice.member}">공지사항</a></td>
+                    <td width="120"><a href="../item/list.html" th:href="@{/item/list}"
+                                       th:text="#{menu.item.member}">상품</a></td>
+                    <td width="120"><a href="../coin/charge.html" th:href="@{/coin/charge}"
+                                       th:text="#{menu.coin.charge}">코인충전</a></td>
+                    <td width="120"><a href="../coin/list.html" th:href="@{/coin/list}"
+                                       th:text="#{menu.coin.list}">충전내역</a></td>
+                    <td width="120"><a href="../useritem/list.html" th:href="@{/useritem/list}"
+                                       th:text="#{menu.useritem.list}">구매상품</a></td>
+                    <td width="120"><a href="../coin/listPay.html" th:href="@{/coin/listPay}"
+                                       th:text="#{menu.coin.listPay}">구매내역</a></td>
+                    <td width="120"><a href="../pds/list.html" th:href="@{/pds/list}"
+                                       th:text="#{menu.pds.member}">공개자료실</a></td>
+                </th:block>
+
+            </th:block>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

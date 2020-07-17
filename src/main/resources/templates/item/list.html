@@ -1,0 +1,80 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+
+<head>
+	<title>Item</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{item.header.list}">상품 목록</h2>
+	
+	<th:block sec:authorize="hasRole('ROLE_ADMIN')">
+		<a href="register.html" th:href="@{/item/register}" th:text="#{action.new}">새로만들기</a>
+	</th:block>
+	
+	<table border="1">
+		<tr>
+			<th align="center" width="80" th:text="#{item.itemId}">상품아이디</th>
+			<th align="center" width="320" th:text="#{item.itemName}">상품명</th>
+			<th align="center" width="100" th:text="#{item.itemPrice}">상품가격</th>
+			
+			<th:block sec:authorize="hasRole('ROLE_ADMIN')">
+				<th align="center" width="80" th:text="#{item.edit}">편집</th>
+				<th align="center" width="80" th:text="#{item.remove}">제거</th>
+			</th:block>
+			
+			<th:block sec:authorize="hasRole('ROLE_MEMBER')">
+				<th align="center" width="80" th:text="#{item.read}">보기</th>
+			</th:block>
+		</tr>
+		
+		<tr th:if="${#lists.isEmpty(itemList)}">
+			<th:block sec:authorize="!hasRole('ROLE_ADMIN') AND !hasRole('ROLE_MEMBER')">
+				<td colspan="3" th:text="#{common.listEmpty}">
+					List is empty.
+				</td>
+			</th:block>
+			
+			<th:block sec:authorize="hasRole('ROLE_ADMIN')">
+				<td colspan="5" th:text="#{common.listEmpty}">
+					List is empty.
+				</td>
+			</th:block>
+			
+			<th:block sec:authorize="hasRole('ROLE_MEMBER')">
+				<td colspan="4" th:text="#{common.listEmpty}">
+					List is empty.
+				</td>
+			</th:block>
+		</tr>
+		
+		<tr th:each="item : ${itemList}">
+				<td align="center" th:text="${item.itemId}">${item.itemId}</td>
+				<td align="left" th:text="${item.itemName}">${item.itemName}</td>
+				<td align="right" th:text="|${item.price} 원|">${item.price} 원</td>
+				
+			<th:block sec:authorize="hasRole('ROLE_ADMIN')">
+				<td align="center"><a href="modify.html" th:href="|modify?itemId=${item.itemId}|" th:text="#{item.edit}">편집</a></td>
+				<td align="center"><a href="remove.html" th:href="|remove?itemId=${item.itemId}|" th:text="#{item.remove}">제거</a></td>
+			</th:block>
+			
+			<th:block sec:authorize="hasRole('ROLE_MEMBER')">
+				<td align="center"><a href="read.html" th:href="|read?itemId=${item.itemId}|" th:text="#{item.read}">보기</a></td>
+			</th:block>
+		</tr>
+	</table>
+	
+	<script th:inline="javascript">
+		var result = [[${msg}]];
+		
+		if (result === "SUCCESS") {
+			alert([[#{common.processSuccess}]]);
+		}
+	</script>
+</div>
+</body>
+</html>

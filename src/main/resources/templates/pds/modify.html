@@ -1,0 +1,132 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+
+<head>
+	<title>Pds</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{pds.header.modify}">공개자료실 수정</h2>
+	
+	<form id="pds" action="list.html" th:action="@{/pds/modify}" th:object="${pds}" method="POST" enctype="multipart/form-data">
+		<input type="hidden" name="itemId" th:field="*{itemId}" />		
+		
+		<table>
+			<tr>
+				<td th:text="#{pds.itemName}">자료명</td>
+				<td><input type="text" name="itemName" th:field="*{itemName}" /></td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}">itemName의 에러 메시지</span></td>
+			</tr>
+			<tr>
+				<td th:text="#{pds.itemFile}">파일</td>
+				<td>
+					<input type="file" id="inputFile">
+	
+					<div class="uploadedList"></div>
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td th:text="#{pds.itemDescription}">자료설명</td>
+				<td><textarea name="description" th:field="*{description}"></textarea></td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">description의 에러 메시지</span></td>
+			</tr>
+		</table>
+	</form>
+	
+	<div>
+		<button type="submit" id="btnModify" th:text="#{action.modify}">수정</button>
+		<button type="submit" id="btnList" th:text="#{action.list}">목록</button>
+	</div>
+	
+	<script th:inline="text">
+	$(document).ready(function() {
+		
+		var formObj = $("#pds");
+	
+		$("#btnModify").on("click", function() {
+			formObj.submit();
+		});
+	
+		$("#btnList").on("click", function() {
+			self.location = "list";
+		});
+	  
+		$(".uploadedList").on("click", "span", function(event){
+			$(this).parent("div").remove();
+		});
+			
+		function getOriginalName(fileName){
+			var idx = fileName.indexOf("_") + 1;
+			return fileName.substr(idx);
+		}
+		
+		var itemId = [[${pds.itemId}]];
+		
+		$.getJSON("/pds/getAttach/"+itemId,function(list){
+			$(list).each(function(){
+				
+				console.log("data : " + this);
+				
+				var data = this;
+				
+				console.log("data : " + data);
+				console.log("getOriginalName(data) : " + getOriginalName(data));
+				
+				var str = "<div><a href='/pds/downloadFile?fullName="+data+"'>" + getOriginalName(data)+"</a>" + "<span>X</span></div>";
+				  
+				$(".uploadedList").append(str);
+			});
+		});
+		
+		$("#pds").submit(function(event){
+			event.preventDefault();
+			
+			var that = $(this);
+			
+			var str ="";
+			$(".uploadedList a").each(function(index){	
+				 var value = $(this).attr("href");
+				 value = value.substr(27);
+			
+				 str += "<input type='hidden' name='files[" + index + "]' value='" + value + "'> ";
+			});
+			
+			that.append(str);
+	
+			that.get(0).submit();
+		});
+		
+		$("#inputFile").on("change", function(event){
+			var files = event.target.files;
+			var file = files[0];
+	
+			console.log(file);
+			
+			var formData = new FormData();
+			
+			formData.append("file", file);
+			
+			$.ajax({
+			  url: "/pds/uploadAjax?[[${_csrf.parameterName}]]=[[${_csrf.token}]]",
+			  data: formData,
+			  dataType:"text",
+			  processData: false,
+			  contentType: false,
+			  type: "POST",
+			  success: function(data){
+				  var str = "<div><a href='/pds/downloadFile?fullName=" + data + "'>" + getOriginalName(data) + "</a>" + "<span>X</span></div></div>";
+				  
+				  $(".uploadedList").append(str);
+			  }
+			});
+		});
+			
+	});
+	</script>
+</div>
+</body>
+</html>

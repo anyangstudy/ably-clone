@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layouts/main_template}">
+  
+<head>
+	<title>CodeGroup</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{codegroup.header.list}">코드그룹 목록</h2>
+	<a href="register.html" th:href="@{/codegroup/register}" th:text="#{action.new}">새로만들기</a>
+	<table border="1">
+		<tr>
+			<th align="center" width="160" th:text="#{codegroup.groupCode}">코드그룹코드</th>
+			<th align="center" width="160" th:text="#{codegroup.groupName}">코드그룹명</th>
+			<th align="center" width="180" th:text="#{codegroup.regdate}">등록일시</th>
+		</tr>
+	
+		<tr th:if="${#lists.isEmpty(list)}">
+			<td colspan="3" th:text="#{common.listEmpty}">
+				List is empty.
+			</td>
+		</tr>
+		
+		<tr th:each="codeGroup : ${list}">
+			<td align="center" th:text="${codeGroup.groupCode}">${codeGroup.groupCode}</td>
+			<td align="left"><a href="read.html" th:href="|/codegroup/read?groupCode=${codeGroup.groupCode}|" th:text="${codeGroup.groupName}">${codeGroup.groupName}</a></td>
+			<td align="center" th:text="${#dates.format(codeGroup.regDate, 'yyyy-MM-dd HH:mm')}">${codeGroup.regDate}</td>
+		</tr>
+			
+	</table>
+	
+	<script th:inline="javascript">
+		var result = [[${msg}]];
+	
+		if (result === "SUCCESS") {
+			alert([[#{common.processSuccess}]]);
+		}
+	</script>
+</div>
+</body>
+</html>
