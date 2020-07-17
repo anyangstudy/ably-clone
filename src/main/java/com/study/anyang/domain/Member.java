@@ -45,6 +45,8 @@ public class Member {
     @Column(length = 100, nullable = false)
     private String userName;
 
+    private String job;
+
     private int coin;
 
     @CreationTimestamp
